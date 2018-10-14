@@ -23,11 +23,10 @@ const renderFiles = () =>  {
   }
   document.getElementById("dropzone").innerHTML = "";
   files.forEach(file => {
-    console.log(typeIcons);
-    const extension = file.split('.').pop();
-    const filename = file.split('/').pop();
-    const icon =  typeIcons[extension] || typeIcons["default"];
-    const context = {icon: icon, name: filename, fullname: file};
+    const extension = file.ext;
+    const filename = file.name;
+    const icon =  typeIcons[extension] || typeIcons[file.type];
+    const context = {icon: icon, name: file.name, fullname: file.path};
     const html = fileTemplate(context);
     document.getElementById("dropzone").innerHTML += html;
   });
@@ -37,16 +36,30 @@ const onDrag = (event, filePath) => {
   event.preventDefault();
   ipcRenderer.send('ondragstart', filePath);
 };
-const onDragEnd = (event, filePath) => {
-  console.log("drag end", filePath);
-};
 
 const removeAllFiles = () => {
   files = [];
-  renderFiles();
+  updateFiles();
 };
 
 const removeFile = (fileName) => {
-  files = files.filter(file => file != fileName);
-  renderFiles();
+  files = files.filter(file => file.path != fileName);
+  updateFiles();
+};
+document.ondragover = document.ondrop = (ev) => {
+  ev.preventDefault();
+};
+
+
+const updateFiles = () => {
+  ipcRenderer.send('update_files', files.map(file => file.path));
+};
+
+const onDrop = (event) => {
+  event.preventDefault();
+  const recfiles = [...event.dataTransfer.files];
+  ipcRenderer.send(
+    'dropped_files',
+    recfiles.map(file => file.path)
+  );
 };

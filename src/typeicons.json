@@ -1,5 +1,5 @@
 {
-  "default": "file",
+  "file": "file",
   "pdf": "file-pdf",
   "jpg": "file-image",
   "png": "file-image",

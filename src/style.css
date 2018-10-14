@@ -58,7 +58,7 @@ body::-webkit-scrollbar-thumb {
     height: 60px;
     width: 60px;
     display:inline;
-    cursor: pointer;
+    cursor: grab;
 }
 .file-actions {
     position:absolute;

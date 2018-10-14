@@ -1,4 +1,7 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
+import path from 'path';
+import fs from 'fs';
+// Drag and drop crashes on linux
 app.disableHardwareAcceleration();
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // es lint-disable-line global-require
@@ -10,6 +13,20 @@ if (require('electron-squirrel-startup')) { // es lint-disable-line global-requi
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
+const getFileObj = (file) => {
+  const fullPath = path.resolve(file);
+  return {
+    path: fullPath,
+    name: path.basename(fullPath),
+    ext: path.extname(fullPath).substr(1),
+    type: fs.lstatSync(fullPath).isDirectory() ? 'directory' : 'file'
+  };
+  // return app.getFileIcon(file, {size: 'normal'}, (error, icon) => {
+  //   callback();
+  // });
+};
+
+
 const createWindow = () => {
   // Create the browser window.
   mainWindow = new BrowserWindow({
@@ -19,20 +36,44 @@ const createWindow = () => {
     frame: false
   });
 
-
-  let path = app.getAppPath();
-  let files = process.argv.slice(1).map(file => path + '/' + file);
-  mainWindow.webContents.send('files', files);
+  let files = process.argv.slice(1).map(file => {
+    return getFileObj(file);
+  });
+  // mainWindow.webContents.send('files', files);
 
   ipcMain.on('ready', (event, arg) => {
     event.sender.send('files', files);
   });
   ipcMain.on('ondragstart', (event, filePath) => {
-    event.sender.startDrag({
-      file: filePath,
-      icon: `${__dirname}/fontawesome/pngs/file.png`
+    console.log("filePath", filePath);
+    app.getFileIcon(filePath, {size: 'normal'}, (error, icon) => {
+      const dragFile = '/tmp/dragger-drag.png';
+      fs.writeFile(dragFile, icon.toPNG(), (err) => {
+        if (err) {
+          console.error("save err", err);
+          return;
+        }
+        event.sender.startDrag({
+          file: filePath,
+          // icon: `${__dirname}/fontawesome/pngs/file.png`
+          icon: dragFile
+        });
+      });
     });
   });
+
+  ipcMain.on('update_files', (event, fileList) => {
+    files = fileList.map(file => getFileObj(file));
+    event.sender.send('files', files);
+  });
+
+  ipcMain.on('dropped_files', (event, fileList) => {
+    fileList.forEach(file => {
+      files.push(getFileObj(file));
+    });
+    event.sender.send('files', files);
+  });
+
 
 
   // and load the index.html of the app.

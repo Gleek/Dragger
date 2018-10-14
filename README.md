@@ -23,7 +23,7 @@ Mac app.
 - [x] Pass files via command line params
 - [x] Drag files out window to any other GUI application
 - [ ] Thin out fontawesome
-- [ ] Drag files into Dragger
+- [X] Drag files into Dragger
 - [ ] Remove files when dragged out
 - [ ] Use file previews instead of fontawesome icons
 - [ ] Clubbing of files
