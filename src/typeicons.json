@@ -1,0 +1,10 @@
+{
+  "default": "file",
+  "pdf": "file-pdf",
+  "jpg": "file-image",
+  "png": "file-image",
+  "png": "file-image",
+  "mp4": "file-video",
+  "directory": "folder",
+  "json": "file-code"
+}

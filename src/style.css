@@ -1,0 +1,107 @@
+body {
+    background:  linear-gradient(to bottom, #4c4c4c 0%, #666666 40%, #474747 100%);
+    color: white;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    margin: auto;
+    width: 100%;
+}
+body::-webkit-scrollbar {
+    width: 5px;
+}
+
+body::-webkit-scrollbar-track {
+    background: #666;
+}
+
+body::-webkit-scrollbar-thumb {
+    background: #ddd;
+    border-radius: 20px;
+}
+.hidden {
+    display: none !important;
+}
+
+.text {
+    color: white;
+}
+.empty {
+    position: fixed;
+    left: 30%;
+    right: 0;
+    top: 80%;
+    bottom: 0;
+    margin: auto;
+    color: white;
+    font-size: 40pt;
+    max-width: 100%;
+    max-height: 100%;
+    overflow: auto;
+    height: 100%;
+}
+.file-view {
+    /* display: flex; */
+    /* flex-direction: row; */
+    /* justify-content: space-evenly; */
+    overflow: hidden;
+    width: 100%;
+    height: 65px;
+    position: relative;
+}
+.file-icon {
+    color: white;
+    font-size: 50px;
+    overflow: auto;
+    position: absolute;
+    left: 30px;
+    height: 60px;
+    width: 60px;
+    display:inline;
+    cursor: pointer;
+}
+.file-actions {
+    position:absolute;
+    right: -25px;
+    transition:  all 0.1s linear;
+    /* transform:translate(9999px); */
+    /* flex-direction: column; */
+    /* justify-content: space-evenly; */
+}
+.file:hover .file-actions {
+    right: 10px;
+    transition:  all 0.1s linear;
+    /* transform:translate(0); */
+}
+.file:hover .file-icon {
+    left: 25px;
+    transition:  all 0.1s linear;
+}
+
+.file {
+    padding:12px;
+    text-align: center;
+}
+.file-name {
+    color: white;
+    font-family: "sans-serif";
+    font-size: 9pt;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.file-action {
+    color: white;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.bottom {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    padding: 5px;
+}
+.button {
+    cursor: pointer;
+}

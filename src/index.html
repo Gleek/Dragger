@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <link rel="stylesheet" href="fontawesome/css/all.css" type="text/css">
+    <meta charset="utf-8">
+    <title>Dragger</title>
+    <script id="file-template" type="text/template">
+        <div  draggable="true" class="file" ondragstart="onDrag(event, '{{fullname}}')" ondragend="onDragEnd(event, '{{fullname}}')">
+            <div class="file-view">
+                <div class="file-icon" title="{{fullname}}" >
+                    <i class="far fa-{{icon}}"></i>
+                </div>
+                <div class="file-actions">
+                    <div class="file-action" title="Remove" onclick="removeFile('{{fullname}}')">
+                        <i class="far fa-times-circle"></i>
+                    </div>
+                    <div class="file-action" title="Lock">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="file-name">{{name}}</div>
+        </div>
+    </script>
+    <script id="empty-template" type="text/template">
+        <div class="empty">
+            <i class="fas fa-shopping-basket"></i>
+        </div>
+    </script>
+</head>
+
+<body>
+    <div id="dropzone">
+    </div>
+    <div class="bottom">
+        <div title="Clear all" class="clean button" onclick="removeAllFiles()">
+            <i class="fas fa-broom"></i>
+        </div>
+    </div>
+</body>
+
+<script src="render.js"></script>
+
+</html>
