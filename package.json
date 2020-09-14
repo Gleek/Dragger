@@ -2,7 +2,7 @@
   "name": "dragger",
   "productName": "dragger",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "Easily drag and drop files",
   "main": "src/index.js",
   "scripts": {
     "start": "electron-forge start",
@@ -13,8 +13,7 @@
   },
   "keywords": [],
   "author": {
-    "name": "Umar Ahmad",
-    "email": "Gleek@users.noreply.github.com"
+    "name": "Umar Ahmad"
   },
   "license": "MIT",
   "config": {
@@ -46,6 +45,7 @@
   },
   "dependencies": {
     "electron-squirrel-startup": "^1.0.0",
+    "font-awesome-filetypes": "^2.1.0",
     "handlebars": "^4.7.6"
   },
   "devDependencies": {
@@ -54,7 +54,6 @@
     "@electron-forge/maker-rpm": "^6.0.0-beta.53",
     "@electron-forge/maker-squirrel": "^6.0.0-beta.53",
     "@electron-forge/maker-zip": "^6.0.0-beta.53",
-    "electron": "10.1.1",
-    "font-awesome-filetypes": "^2.1.0"
+    "electron": "10.1.1"
   }
 }

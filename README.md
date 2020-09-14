@@ -4,6 +4,12 @@ Utility to manage drag and drop of files/directories.
 
 Files and directories can be dragged or passed as arguments to dragger
 which saves them to be later dragged into some other application.
+# Building
+
+``` sh
+npm install
+npm run make
+```
 
 # Usage
 ```
