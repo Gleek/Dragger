@@ -22,7 +22,9 @@ body::-webkit-scrollbar-thumb {
 .hidden {
     display: none !important;
 }
-
+#dropzone {
+    height: 100vh;
+}
 .text {
     color: white;
 }

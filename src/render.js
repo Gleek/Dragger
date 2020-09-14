@@ -1,12 +1,16 @@
 // In renderer process (web page).
 const {ipcRenderer} = require('electron');
 const Handlebars = require('handlebars');
-const typeIcons = require('./typeicons.json');
+const {getClassNameForExtension}  = require('font-awesome-filetypes');
+
 ipcRenderer.send('ready');
 const source = document.getElementById("file-template").innerHTML;
 const fileTemplate = Handlebars.compile(source);
 const emptySource = document.getElementById("empty-template").innerHTML;
 const emptyTemplate = Handlebars.compile(emptySource);
+Handlebars.registerHelper('escape', function(variable) {
+  return variable.replace(/(['"])/g, '\\$1');
+});
 // When files are received
 let files = null;
 ipcRenderer.on('files', (event, arg) => {
@@ -25,7 +29,8 @@ const renderFiles = () =>  {
   files.forEach(file => {
     const extension = file.ext;
     const filename = file.name;
-    const icon =  typeIcons[extension] || typeIcons[file.type];
+    const icon =  getClassNameForExtension(extension);
+    console.log("Icon found for file.ext", icon)
     const context = {icon: icon, name: file.name, fullname: file.path};
     const html = fileTemplate(context);
     document.getElementById("dropzone").innerHTML += html;
@@ -34,6 +39,7 @@ const renderFiles = () =>  {
 
 const onDrag = (event, filePath) => {
   event.preventDefault();
+  console.log("Dragging");
   ipcRenderer.send('ondragstart', filePath);
 };
 
@@ -43,6 +49,7 @@ const removeAllFiles = () => {
 };
 
 const removeFile = (fileName) => {
+  console.log("removing");
   files = files.filter(file => file.path != fileName);
   updateFiles();
 };

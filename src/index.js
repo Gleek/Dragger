@@ -1,6 +1,6 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
-import path from 'path';
-import fs from 'fs';
+const { app, BrowserWindow, ipcMain } = require('electron');
+const path = require('path');
+const fs = require('fs');
 // Drag and drop crashes on linux
 app.disableHardwareAcceleration();
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -9,9 +9,9 @@ if (require('electron-squirrel-startup')) { // es lint-disable-line global-requi
 }
 
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
-let mainWindow;
+// // Keep a global reference of the window object, if you don't, the window will
+// // be closed automatically when the JavaScript object is garbage collected.
+// let mainWindow;
 
 const getFileObj = (file) => {
   const fullPath = path.resolve(file);
@@ -29,11 +29,16 @@ const getFileObj = (file) => {
 
 const createWindow = () => {
   // Create the browser window.
-  mainWindow = new BrowserWindow({
+  const mainWindow = new BrowserWindow({
     width: 150,
     height: 400,
     // transparent: true,
-    frame: false
+    frame: false,
+    resizable: false,
+    alwaysOnTop: true,
+    webPreferences: {
+      nodeIntegration: true
+    }
   });
 
   let files = process.argv.slice(1).map(file => {
@@ -46,20 +51,24 @@ const createWindow = () => {
   });
   ipcMain.on('ondragstart', (event, filePath) => {
     console.log("filePath", filePath);
-    app.getFileIcon(filePath, {size: 'normal'}, (error, icon) => {
-      const dragFile = '/tmp/dragger-drag.png';
-      fs.writeFile(dragFile, icon.toPNG(), (err) => {
-        if (err) {
-          console.error("save err", err);
-          return;
-        }
-        event.sender.startDrag({
-          file: filePath,
-          // icon: `${__dirname}/fontawesome/pngs/file.png`
-          icon: dragFile
-        });
-      });
+    event.sender.startDrag({
+      file: filePath,
+      icon: `${__dirname}/file.png`
     });
+    // app.getFileIcon(filePath, {size: 'normal'}, (error, icon) => {
+    //   const dragFile = '/tmp/dragger-drag.png';
+    //   fs.writeFile(dragFile, icon.toPNG(), (err) => {
+    //     if (err) {
+    //       console.error("save err", err);
+    //       return;
+    //     }
+    //     event.sender.startDrag({
+    //       file: filePath,
+    //       // icon: `${__dirname}/fontawesome/pngs/file.png`
+    //       icon: dragFile
+    //     });
+    //   });
+    // });
   });
 
   ipcMain.on('update_files', (event, fileList) => {
@@ -79,6 +88,8 @@ const createWindow = () => {
   // and load the index.html of the app.
   mainWindow.loadURL(`file://${__dirname}/index.html`);
 
+  mainWindow.webContents.openDevTools();
+
   // mainWindow.setVisibleOnAllWorkspaces(true);
 
   // Open the DevTools.
@@ -89,7 +100,7 @@ const createWindow = () => {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
-    mainWindow = null;
+    // mainWindow = null;
   });
 };
 
@@ -100,11 +111,7 @@ app.on('ready', createWindow);
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
-  // On OS X it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
+  app.quit();
 });
 
 app.on('activate', () => {

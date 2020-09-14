@@ -7,13 +7,13 @@
     <meta charset="utf-8">
     <title>Dragger</title>
     <script id="file-template" type="text/template">
-        <div  draggable="true" class="file" ondragstart="onDrag(event, '{{fullname}}')" ondragend="onDragEnd(event, '{{fullname}}')">
+        <div  draggable="true" class="file" ondragstart="onDrag(event, '{{escape fullname}}')" ondragend="onDragEnd(event, '{{escape fullname}}')">
             <div class="file-view">
-                <div class="file-icon" title="{{fullname}}" >
-                    <i class="far fa-{{icon}}"></i>
+                <div class="file-icon" title="{{escape fullname}}" >
+                    <i class="fa {{escape icon}}"></i>
                 </div>
                 <div class="file-actions">
-                    <div class="file-action" title="Remove" onclick="removeFile('{{fullname}}')">
+                    <div class="file-action" title="Remove" onclick="removeFile('{{escape fullname}}')">
                         <i class="far fa-times-circle"></i>
                     </div>
                     <div class="file-action" title="Lock">
@@ -21,7 +21,7 @@
                     </div>
                 </div>
             </div>
-            <div class="file-name">{{name}}</div>
+            <div class="file-name">{{escape name}}</div>
         </div>
     </script>
     <script id="empty-template" type="text/template">
